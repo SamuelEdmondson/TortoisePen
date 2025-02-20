@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+    
+<!-- CS559 Workbook Pages - page content &copy; 2021, Michael Gleicher -->
+<!-- This page is part of a Workbook developed for the 
+    CS559 Computer Graphics Class at the University of Wisconsin
+    https://graphics.cs.wisc.edu/Courses/559-sp2025/ -->
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="../../css/workbook.css">
+        <script src="../../js/resizeIFrames.js"></script>
+    </head>
+    <body>
+        <div class="container container--outer"><div class="maincolumn">
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header"><h1 class="post__title">Page 2: Scale Transformations</h1>
+		</header>
+        
+        
+        
+		<div class="content post__content clearfix"><p>Last page, we learned about our first transformation, <code>translate</code>. Now, let&rsquo;s learn a second one: <code>scale</code>.</p>
+<h2 id="boxes-1-and-2-scaling-up">Boxes 1 and 2: Scaling Up</h2>
+<p>A <code>scale</code> transformation makes things bigger or smaller by multiplying all of the coordinates by some value.</p>
+<p>If we want to double the size of things, we multiply all the coordinates by two. If we want to halve the size of things, we multiply all coordinates by 1/2.</p>
+<p>Here are some examples (
+    
+    <a href="../../for_students/03-02-01.html" class="for_students for_students--notfile">03-02-01.html</a> and 
+    
+    <a href="../../for_students/03-02-01.js" class="for_students for_students--notfile">03-02-01.js</a>)- in each case, same drawing, but with a different scale.</p>
+<iframe
+    title="03-02-01"
+    src="../../for_students/03-02-01.html"
+    class="includebox includebox-standard"
+    width="100%"
+    height="100%"
+    scrolling="no"
+    frameborder="0"
+></iframe>
+
+<p>The first is drawn without scaling, the second with <code>scale=2</code> (double), the third with <code>scale=.5</code>.</p>
+<p>To be a little more complete like we did with translation:</p>
+<iframe
+    title="03-02-02"
+    src="../../for_students/03-02-02.html"
+    class="includebox includebox-standard"
+    width="100%"
+    height="100%"
+    scrolling="no"
+    frameborder="0"
+></iframe>
+
+<p>Just like translation, you could have done this by doing something to each of the coordinates.
+With translation, we added. Here we would multiply. The code (
+    
+    <a href="../../for_students/03-02-02.html" class="for_students for_students--notfile">03-02-02.html</a> and 
+    
+    <a href="../../for_students/03-02-02.js" class="for_students for_students--notfile">03-02-02.js</a>) uses scale.</p>
+<p>So, you can think about <code>scale</code> as multiplying all the coordinates by the scaling factor. It is a <strong>transformation</strong>, or function that takes a point and returns a new point. So, <code>scale(s)</code> can be thought of as a function <code>f(x,y) =&gt; (sx,sy).</code></p>
+<p>However, we can also think of <code>scale</code> as changing the coordinate system that we use to interpret points. It changes the basis vectors. Rather than telling us to interpret the value of <code>x</code> as being pixels to the right, it tells us to interpret each unit of <code>x</code> as a different number of pixels to the right. And likewise for y.</p>
+<p>You can think of <code>translate</code> as moving the piece of paper that we are going to draw on. You can think of <code>scale</code> as stretching the piece of paper that we draw on. If you like my animated demos, you can look at the &ldquo;Simple Scale&rdquo; and &ldquo;Multiple Simple Scales&rdquo; example in <a href="https://cs559.github.io/2DTransformDemos/transformToy.html" target="_blank">2D Transform Toy (default demos)</a>.</p>
+<p>This idea of thinking about transformations as things that alter the coordinate system (how we interpret object coordinates) rather than being functions that change points is an important concept in computer graphics. Once you get used to it, it makes lots of things easier. It will be important to be able to think about things both ways.</p>
+<p>Here are two quick reasons why thinking in terms of changing coordinates might make sense. First, when we do the transform operation (the <code>scale</code> or <code>translate</code> command) - they don&rsquo;t even have the objects/points to draw yet! We are simply setting up the coordinate system that future objects will be drawn into. Second, when we apply multiple transformations, it tells us how the changes occur. If we do a first transformation, it changes the coordinate system. The second transformation changes that resulting coordinate system. We&rsquo;ll see this in a bit.</p>
+<h2 id="box-3-non-uniform-scales">Box 3: Non Uniform Scales</h2>
+<p>The Canvas <code>scale</code> function allows us to specify separate scaling factors for box x and y. In the example above, we gave the same value to both. Just for completeness, here&rsquo;s a variant of that last example (
+    
+    <a href="../../for_students/03-02-03.html" class="for_students for_students--notfile">03-02-03.html</a> and 
+    
+    <a href="../../for_students/03-02-03.js" class="for_students for_students--notfile">03-02-03.js</a>):</p>
+<iframe
+    title="03-02-03"
+    src="../../for_students/03-02-03.html"
+    class="includebox includebox-standard"
+    width="100%"
+    height="100%"
+    scrolling="no"
+    frameborder="0"
+></iframe>
+
+<p>We call a scale where all the dimensions have the same scale factor a <em>uniform</em> scale. We call a scale where dimensions have an unequal values a <em>non-uniform</em> scale.</p>
+<h2 id="box-4-center-of-scaling">Box 4: Center of Scaling</h2>
+<p>Since we&rsquo;re multiplying by the scaling factor, the point <code>(0,0)</code> does not change as we change the scale factor. However, all other points will change. This can make objects seem to move if we&rsquo;re not careful. This example is really similar to the ones above, except that rather than placing the square at the origin <code>(0,0)</code>, the square is placed at <code>(10,10).</code> Note how the square appears to move as you slide the slider. Look at 
+    
+    <a href="../../for_students/03-02-04.html" class="for_students for_students--notfile">03-02-04.html</a> and 
+    
+    <a href="../../for_students/03-02-04.js" class="for_students for_students--notfile">03-02-04.js</a></p>
+<iframe
+    title="03-02-04"
+    src="../../for_students/03-02-04.html"
+    class="includebox includebox-standard"
+    width="100%"
+    height="100%"
+    scrolling="no"
+    frameborder="0"
+></iframe>
+
+<p>You should understand why this is happening: when we multiply by the scaling factor, every point (except for <code>(0,0)</code>) moves. If we scale by 2, the point <code>(10,10)</code> moves to <code>(20,20)</code>. It doesn&rsquo;t matter if it is the top left corner of our square, or something else.</p>
+<p>This apparent motion can be inconvenient or annoying if you just want to make an object bigger.</p>
+<p>With scaling, there is always exactly one position that doesn&rsquo;t change. It is called the <strong>center of scaling.</strong> It is at the center of the coordinate system. Looking ahead, we can change the coordinate system to be wherever we want so that scaling grows from whatever point we want. But in order to do that, we need to be able to put transformations together.</p>
+<h2 id="box-5-multiple-scalings">Box 5: Multiple Scalings</h2>
+<p>We can apply multiple <code>scale</code> transformations. Each time, we stretch the coordinate system more before we either draw (or apply another <code>scale</code>). If we are just doing scaling, the scale factors multiply, and <em>scalar</em> (regular number) multiplication is commutative.</p>
+<p>Here&rsquo;s an example using transparency. Look at the code (
+    
+    <a href="../../for_students/03-02-05.html" class="for_students for_students--notfile">03-02-05.html</a> and 
+    
+    <a href="../../for_students/03-02-05.js" class="for_students for_students--notfile">03-02-05.js</a>): we scale, draw the red box, scale again, and draw the blue box. The blue box is scaled by both scalings. This is the same as multiplying them together.</p>
+<iframe
+    title="03-02-05"
+    src="../../for_students/03-02-05.html"
+    class="includebox includebox-standard"
+    width="100%"
+    height="100%"
+    scrolling="no"
+    frameborder="0"
+></iframe>
+
+<p>You can also try the &ldquo;Multiple Simple Scales&rdquo; demo on the <a href="https://cs559.github.io/2DTransformDemos/transformToy.html" target="_blank">2D Transform Toy (default demos)</a>.</p>
+<p>On the next page, we will combine translation and scaling transformations. When we start to combine things, order will start to matter.</p>
+<h2 id="box-6-try-it">Box 6: Try it</h2>
+<p>OK, a small exercise. This box has 2 versions of the same picture. One has many scale commands. In the second box (the line that says &ldquo;change this&rdquo;) change the single scale command so it does the same thing as the other version of the code. You need to edit 
+    
+    <a href="../../for_students/03-02-06.js" class="for_students for_students--notfile">03-02-06.js</a> file, you don&rsquo;t need to edit 
+    
+    <a href="../../for_students/03-02-06.html" class="for_students for_students--notfile">03-02-06.html</a>.</p>
+<iframe
+    title="03-02-06"
+    src="../../for_students/03-02-06.html"
+    class="includebox includebox-standard"
+    width="100%"
+    height="100%"
+    scrolling="no"
+    frameborder="0"
+></iframe>
+
+<p>Just change the numbers in the last <code>scale</code> command (now they are 1,1).</p>
+<h2 id="summary">Summary</h2>
+<p>We&rsquo;ve learned to scale things. Now let&rsquo;s put that together with translation on <a href="../../docs/3/" class="Next__Page">page 3</a>.</p>
+<p><a href="../../docs/3/" class="Next__Page">Next: Composition </a></p>
+
+            
+
+
+        <div class="page-rubric-container">
+    <details class="page__rubric">
+    <summary>Page 2 Rubric (3 points total)</summary>
+    <br/>
+    <div class="page-rubric-grid">
+            <div class="page-rubric-grid-header rubric-box-regular">Points (3):</div><div class="page-rubric-grid-box rubric-box-regular">Box 03-02-06</div>
+                <div class="page-rubric-grid-points rubric-box-regular">3 pt</div>
+                <div class="page-rubric-grid-desc rubric-box-regular">change the scales so the two pictures look the same</div></div>
+    </details>
+    </div>
+			
+			
+		</div>
+	</article>
+</main>
+
+                </div>
+                <div class="sidebar">
+<h2 class="Side_Title">Workbook 3: Transformations</h2>
+<p class="Side__Note">Pages:</p>
+<ul class="Side__List">
+    <li class="Side__Item Side__Unselected"><a href="../../">Index (CS559 Workbook 3: Transformations)</a></li>
+        <li class="Side__Item Side__Unselected"> <a href="../../docs/1/">1: Translate Transformations </a></li>
+        <li class="Side__Item Side__Selected"> 2: Scale Transformations </li>
+        <li class="Side__Item Side__Unselected"> <a href="../../docs/3/">3: Composition </a></li>
+        <li class="Side__Item Side__Unselected"> <a href="../../docs/4/">4: Rotation </a></li>
+        <li class="Side__Item Side__Unselected"> <a href="../../docs/5/">5: Hierarchy </a></li>
+        <li class="Side__Item Side__Unselected"> <a href="../../docs/6/">6: Quadcopter Exercise </a></li>
+        <li class="Side__Item Side__Unselected"> <a href="../../docs/7/">7: SVG Tutorial and Transformations </a></li>
+        <li class="Side__Item Side__Unselected"> <a href="../../docs/8/">8: SVG Exercise </a></li>
+        <li class="Side__Item Side__Unselected"> <a href="../../docs/9/">9: Hand-in and Gallery </a></li>
+</ul>
+</div>
+</div>
+    </body>
+</html>

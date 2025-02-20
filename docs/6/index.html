@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+    
+<!-- CS559 Workbook Pages - page content &copy; 2021, Michael Gleicher -->
+<!-- This page is part of a Workbook developed for the 
+    CS559 Computer Graphics Class at the University of Wisconsin
+    https://graphics.cs.wisc.edu/Courses/559-sp2025/ -->
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="../../css/workbook.css">
+        <script src="../../js/resizeIFrames.js"></script>
+    </head>
+    <body>
+        <div class="container container--outer"><div class="maincolumn">
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header"><h1 class="post__title">Page 6: Quadcopter Exercise</h1>
+		</header>
+        
+        
+        
+		<div class="content post__content clearfix"><p>Note: this is not the last page. There is more in the workbook after this exercise. <a href="../../docs/7/" class="Next__Page">Next: SVG Tutorial and Transformations </a></p>
+<h2 id="box-1-exercise-4-quadcopter">Box 1: Exercise 4, Quadcopter</h2>
+<iframe
+    title="03-06-01"
+    src="../../for_students/03-06-01.html"
+    class="includebox includebox-standard"
+    width="100%"
+    height="100%"
+    scrolling="no"
+    frameborder="0"
+></iframe>
+
+<p>To try out hierarchical modeling and animation, you will make a QuadCopter. Since we&rsquo;re still doing 2D, we&rsquo;ll make a top view. This is a hierarchical model: the QuadCopter moves around (and turns) and has 4 propellers that stay attached, but spin around. You can make it fancier if you like. You can see examples from a previous class below.</p>
+<p>Some requirements:</p>
+<ol>
+<li>Your QuadCopter can be simple in shape, but it must have a front, and 4 arms that the rotors attach to.</li>
+<li>The propellers can be simple, but them must have an obvious center that they spin around.</li>
+<li>Your scene must have a QuadCopter that travels in a circle and points forward as it goes around the circle. (yes, real quadcopters do not need to face their direction of travel - but for this, the quadcopter has to face where it is going)</li>
+<li>The propellers must spin at different rates.</li>
+<li>Your quadcopter must be done using Canvas, and put into a Canvas element on this page. You can use the above canvas with id <code>canvas1</code> on this page for it.</li>
+</ol>
+<p>For your assignment, you need to make a quadcopter. If you want to make something else, you can make it in addition to the quadcopter. There are many other vehicles with spinning parts.</p>
+<p>Your code must be in 
+    
+    <a href="../../for_students/03-06-01.html" class="for_students for_students--notfile">03-06-01.html</a> and 
+    
+    <a href="../../for_students/03-06-01.js" class="for_students for_students--notfile">03-06-01.js</a>. We&rsquo;ve given you the basics. You must use <code>window.requestAnimationFrame</code> correctly, including using the time parameter. You learned about this in previous workbooks, and the code should give you plenty of examples. You may use features of Canvas that we have not learned about in class yet (like Bezier curves), but you do not have to.</p>
+<p>You can see examples of past assignments on the Galleries page on the course website. Note: if you find code on the web from previous students, you should not look at it or copy it.</p>
+<h2 id="beyond-the-basics">Beyond the Basics</h2>
+<p>The list above is for a complete assignment to get the regular points for this exercise (20). Basically, you need to make one quadcopter that moves in a circle with propellers that spin. You may earn up to <no value> advanced points by adding additional features.</p>
+<ol>
+<li>Have multiple &ldquo;copters&rdquo; (vehicles with spinning parts): the copters need to be different in appearance or motion (2pt)</li>
+<li>Have quadcopters that fly in complex paths (at least one should still fly in a circle). (2pts)</li>
+<li>Make cool looking quadcopters (2pts).</li>
+<li>Provide some kind of interaction (e.g., let the user fly a quadcopter with the keyboard). You can add controls to the HTML, or respond to events in the Canvas. If the user is supposed to do something, make sure that the HTML has instructions above the Canvas. (2pts)</li>
+<li>Make the quadcopters &ldquo;do something&rdquo;. You could have people that the quadcopter flies to and rescues - they could wave their arms to flag it down (more articulated motion!). (2 pts)</li>
+<li>Make other articulated objects in the scene that are animated to show off their articulations. (1 pts)</li>
+</ol>
+<p>Note: for each of these, the grader will not give you points unless you explain what you did and how to see these features (things we should watch for, interactions we can try, etc.) in <strong>03-workbook.txt</strong>. Also, no matter how much you do, we will only add at most 8 advanced points for the entire workbook.</p>
+<p>Remember that the main learning goal of the assignment is hierarchical modeling using transformations with parts.</p>
+<p>Remember: advanced points are harder to get than regular points. Be sure to get regular points first. For example, if you make a quadcopter do something more complex than flying in a circle, you should also have another one that flies in a circle.</p>
+<p><a href="../../docs/7/" class="Next__Page">Next: SVG Tutorial and Transformations </a></p>
+
+            
+
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <div class="page-rubric-container">
+    <details class="page__rubric">
+    <summary>Page 6 Rubric (34 points total)</summary>
+    <br/>
+    <div class="page-rubric-grid">
+            <div class="page-rubric-grid-header rubric-box-regular">Points (23):</div><div class="page-rubric-grid-box rubric-box-regular">Box 03-06-01</div>
+                <div class="page-rubric-grid-points rubric-box-regular">6 pt</div>
+                <div class="page-rubric-grid-desc rubric-box-regular">quadcopter has a front and 4 arms</div><div class="page-rubric-grid-box rubric-box-regular">Box 03-06-01</div>
+                <div class="page-rubric-grid-points rubric-box-regular">8 pt</div>
+                <div class="page-rubric-grid-desc rubric-box-regular">four attached propellers that spin</div><div class="page-rubric-grid-box rubric-box-regular">Box 03-06-01</div>
+                <div class="page-rubric-grid-points rubric-box-regular">3 pt</div>
+                <div class="page-rubric-grid-desc rubric-box-regular">propellers spin at different rates</div><div class="page-rubric-grid-box rubric-box-regular">Box 03-06-01</div>
+                <div class="page-rubric-grid-points rubric-box-regular">3 pt</div>
+                <div class="page-rubric-grid-desc rubric-box-regular">goes around a circle</div><div class="page-rubric-grid-box rubric-box-regular">Box 03-06-01</div>
+                <div class="page-rubric-grid-points rubric-box-regular">3 pt</div>
+                <div class="page-rubric-grid-desc rubric-box-regular">faces points forward while going around circle</div>
+            <div class="page-rubric-grid-header rubric-box-bonus">Advanced points (11) 
+                :</div><div class="page-rubric-grid-box rubric-box-bonus">Box 03-06-01</div>
+                <div class="page-rubric-grid-points rubric-box-bonus">2 pt</div>
+                <div class="page-rubric-grid-desc rubric-box-bonus">multiple vehicles (must have spinning parts)</div><div class="page-rubric-grid-box rubric-box-bonus">Box 03-06-01</div>
+                <div class="page-rubric-grid-points rubric-box-bonus">2 pt</div>
+                <div class="page-rubric-grid-desc rubric-box-bonus">complex paths (at least one &#39;copter must be a circle)</div><div class="page-rubric-grid-box rubric-box-bonus">Box 03-06-01</div>
+                <div class="page-rubric-grid-points rubric-box-bonus">2 pt</div>
+                <div class="page-rubric-grid-desc rubric-box-bonus">cool looking vehicles</div><div class="page-rubric-grid-box rubric-box-bonus">Box 03-06-01</div>
+                <div class="page-rubric-grid-points rubric-box-bonus">2 pt</div>
+                <div class="page-rubric-grid-desc rubric-box-bonus">interaction (be sure to document)</div><div class="page-rubric-grid-box rubric-box-bonus">Box 03-06-01</div>
+                <div class="page-rubric-grid-points rubric-box-bonus">2 pt</div>
+                <div class="page-rubric-grid-desc rubric-box-bonus">quadcopters do something beyond move in a path</div><div class="page-rubric-grid-box rubric-box-bonus">Box 03-06-01</div>
+                <div class="page-rubric-grid-points rubric-box-bonus">1 pt</div>
+                <div class="page-rubric-grid-desc rubric-box-bonus">other articulated object</div></div>
+    </details>
+    </div>
+			
+			
+		</div>
+	</article>
+</main>
+
+                </div>
+                <div class="sidebar">
+<h2 class="Side_Title">Workbook 3: Transformations</h2>
+<p class="Side__Note">Pages:</p>
+<ul class="Side__List">
+    <li class="Side__Item Side__Unselected"><a href="../../">Index (CS559 Workbook 3: Transformations)</a></li>
+        <li class="Side__Item Side__Unselected"> <a href="../../docs/1/">1: Translate Transformations </a></li>
+        <li class="Side__Item Side__Unselected"> <a href="../../docs/2/">2: Scale Transformations </a></li>
+        <li class="Side__Item Side__Unselected"> <a href="../../docs/3/">3: Composition </a></li>
+        <li class="Side__Item Side__Unselected"> <a href="../../docs/4/">4: Rotation </a></li>
+        <li class="Side__Item Side__Unselected"> <a href="../../docs/5/">5: Hierarchy </a></li>
+        <li class="Side__Item Side__Selected"> 6: Quadcopter Exercise </li>
+        <li class="Side__Item Side__Unselected"> <a href="../../docs/7/">7: SVG Tutorial and Transformations </a></li>
+        <li class="Side__Item Side__Unselected"> <a href="../../docs/8/">8: SVG Exercise </a></li>
+        <li class="Side__Item Side__Unselected"> <a href="../../docs/9/">9: Hand-in and Gallery </a></li>
+</ul>
+</div>
+</div>
+    </body>
+</html>

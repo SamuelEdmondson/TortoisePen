@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+    
+<!-- CS559 Workbook Pages - page content &copy; 2021, Michael Gleicher -->
+<!-- This page is part of a Workbook developed for the 
+    CS559 Computer Graphics Class at the University of Wisconsin
+    https://graphics.cs.wisc.edu/Courses/559-sp2025/ -->
+    <head>
+	<meta name="generator" content="Hugo 0.140.2">
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="./css/workbook.css">
+        <script src="./js/resizeIFrames.js"></script>
+    </head>
+    <body>
+        <div class="container container--outer"><div class="maincolumn">
+
+
+<main class="main list" role="main">
+	<header class="main__header">
+		<h1 class="main__title">Workbook 3: Transformations</h1>
+	</header>
+	<div class="content main__content clearfix">
+        
+
+        <p>This workbook is due on Friday, February 14, 2025.</p><p>One of the most fundamental concepts in computer graphics is <em>transformation</em>. Transformations let us work in convenient coordinate systems, model complicated things by putting together parts, move things around without damaging their structure, animate things without changing their shape (or, changing their shape if we want), and many other things.</p>
+<p>Generally, the mathematics of transformations are taught first, and then we tell you what to use them for.</p>
+<p>Here it is going to be the other way round: we&rsquo;ll jump right in and use transformations to see why they are so useful. We&rsquo;ll write some programs that make use of transformations. Then, we&rsquo;ll look at what is happening &ldquo;under the hood&rdquo;.</p>
+<p>This workbook has tutorial text and examples - make sure you understand them. Read the code!</p>
+<p>Several pages have required exercises (see the rubric), and there is the potential for advanced points on page 6.</p>
+<p>Remember to commit your work as you edit files in <code>for_students</code> (you should not edit files outside of that directory). Remember to push your work to GitHub - at least at the end, or periodically after you commit to make a backup. And, when you have completed the workbook remember to submit to WB3 Canvas Assignment to signal to us that it is ready for us to grade.</p>
+<h2>Learning Goals</h2>
+<ol>
+    <li>Understand the importance of coordinate systems in graphics</li>
+    <li>Understand the concepts of transformation and their use in graphics</li>
+    <li>Understand how to think about transformations in terms of coordinate systems</li>
+    <li>Understand how basic transformations (rotate, translate, scale) are used</li>
+    <li>Understand how transformations are composed to achieve different effects</li>
+    <li>Be able to use the HTML Canvas transformation functionality</li>
+    <li>Understand and use the basic ideas of hierarchical modeling and articulation</li>
+    <li>Understand how hierearchy and transformation is represented in a scene-graph API such as SVG</li>
+    <li>Be able to use SVG (as a file format) including its hierarchy and instancing features</li>
+</ol>
+<h2 id="other-resources">Other Resources</h2>
+<p>This workbook is a little less self-contained than the prior workbook, you will probably
+want to look at some things outside the workbook.</p>
+<ul>
+<li>In this workbook, we will focus on using transformations. Textbooks discuss the math of transformations first, so we will read them in the future. However, on page 5, you will want to see more examples of how to use transformations to do hierarchical modeling.</li>
+</ul>
+<p>We used to have a list of textbook chapters, now we recommend a video, and some other things:</p>
+<ul>
+<li>At the University of Washington (the other UW), Prof. Steve Seitz (who is a Wisconsin Alum) has made a series of short videos he calls <a href="https://g5m.cs.washington.edu/" target="_blank">Graphics in 5 Minutes</a> where he tries to condense his hour long lectures into 5 minute cartoons. All the videos are in a YouTube Channel (<a href="https://www.youtube.com/playlist?list=PLWfDJ5nla8UpwShx-lzLJqcp575fKpsSO" target="_blank">Graphics in 5 Minutes You Tube Channel</a>). One or two of these videos is very relevant, so I will recommend it when we get to page 5. In general, he likes to show the math first, so it isn&rsquo;t completely compatible with how we are learning things.</li>
+<li>The linear algebra resources at <a href="https://cs559.github.io/559Tutorials/math/linear-algebra/" target="_blank">CS559 Tutorial: Linear Algebra for CS559</a> will help you connect what is going on to the math.</li>
+<li>The online textbook <a href="https://math.hws.edu/graphicsbook/">Introduction to Computer Graphics</a> - in particular the sections on <a href="https://math.hws.edu/graphicsbook/c2/s3.html">Transforms</a> and <a href="https://math.hws.edu/graphicsbook/c2/s4.html">Hierarchical Modeling</a> gives a &ldquo;math last&rdquo; introduction (although the code examples are Java).</li>
+</ul>
+<ol start="2">
+<li>
+<p>On pages 7 and 8, we will look at SVG as an alternative to Canvas. You will need to read something about SVG in order to do the assignments.</p>
+<p>The required reading for this are the class tutorials (<a href="https://cs559.github.io/559Tutorials/svg/" target="_blank">CS559 SVG Tutorial</a>). You may also want to read other resources to learn about SVG, such as <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial" target="_blank">Mozilla SVG Tutorial</a> (optional). Note: many of the SVG tutorials discuss curves (in particular, Bézier curves) - we won&rsquo;t get to curves until later in the course, so you don&rsquo;t need to worry about them now.</p>
+</li>
+</ol>
+<p>If you want to read ahead, the readings for next week cover the math of transformations:</p>
+<ol>
+<li>(optional) FCG4 Chapter 6 (can skip 6.1.6 and 6.2)</li>
+</ol>
+<p>BTW: you might want to look back at the Books page on the course website to remind yourself about how the textbooks work in this class.</p>
+
+        
+        <h2>Rubric</h2>
+            
+<div class="page-rubric-container">
+<details class="page__rubric">
+<summary>Workbook Rubric (97 points total)</summary>
+<br/>
+<div class="page-rubric-grid">
+        <div class="page-rubric-grid-header rubric-box-regular">Points (86):</div><div class="page-rubric-grid-box rubric-box-regular"></div>
+            <div class="page-rubric-grid-points rubric-box-regular">20 pt</div>
+            <div class="page-rubric-grid-desc rubric-box-regular">correct WB3 Canvas Assignment submission on time</div><div class="page-rubric-grid-box rubric-box-regular"></div>
+            <div class="page-rubric-grid-points rubric-box-regular">20 pt</div>
+            <div class="page-rubric-grid-desc rubric-box-regular">completed 03-workbook.txt in the for_student folder correctly</div><div class="page-rubric-grid-box rubric-box-regular">Box 03-01-06</div>
+            <div class="page-rubric-grid-points rubric-box-regular">3 pt</div>
+            <div class="page-rubric-grid-desc rubric-box-regular">restore the triangle to original position when the “Jump Right” button is released</div><div class="page-rubric-grid-box rubric-box-regular">Box 03-02-06</div>
+            <div class="page-rubric-grid-points rubric-box-regular">3 pt</div>
+            <div class="page-rubric-grid-desc rubric-box-regular">change the scales so the two pictures look the same</div><div class="page-rubric-grid-box rubric-box-regular">Box 03-03-03</div>
+            <div class="page-rubric-grid-points rubric-box-regular">3 pt</div>
+            <div class="page-rubric-grid-desc rubric-box-regular">add appropriate transformations to make both images look the same</div><div class="page-rubric-grid-box rubric-box-regular">Box 03-03-05</div>
+            <div class="page-rubric-grid-points rubric-box-regular">3 pt</div>
+            <div class="page-rubric-grid-desc rubric-box-regular">define the canvas coordinate systems as specified</div><div class="page-rubric-grid-box rubric-box-regular">Box 03-06-01</div>
+            <div class="page-rubric-grid-points rubric-box-regular">6 pt</div>
+            <div class="page-rubric-grid-desc rubric-box-regular">quadcopter has a front and 4 arms</div><div class="page-rubric-grid-box rubric-box-regular">Box 03-06-01</div>
+            <div class="page-rubric-grid-points rubric-box-regular">8 pt</div>
+            <div class="page-rubric-grid-desc rubric-box-regular">four attached propellers that spin</div><div class="page-rubric-grid-box rubric-box-regular">Box 03-06-01</div>
+            <div class="page-rubric-grid-points rubric-box-regular">3 pt</div>
+            <div class="page-rubric-grid-desc rubric-box-regular">propellers spin at different rates</div><div class="page-rubric-grid-box rubric-box-regular">Box 03-06-01</div>
+            <div class="page-rubric-grid-points rubric-box-regular">3 pt</div>
+            <div class="page-rubric-grid-desc rubric-box-regular">goes around a circle</div><div class="page-rubric-grid-box rubric-box-regular">Box 03-06-01</div>
+            <div class="page-rubric-grid-points rubric-box-regular">3 pt</div>
+            <div class="page-rubric-grid-desc rubric-box-regular">faces points forward while going around circle</div><div class="page-rubric-grid-box rubric-box-regular">Box 03-08-01</div>
+            <div class="page-rubric-grid-points rubric-box-regular">3 pt</div>
+            <div class="page-rubric-grid-desc rubric-box-regular">a picture using SVG</div><div class="page-rubric-grid-box rubric-box-regular">Box 03-08-01</div>
+            <div class="page-rubric-grid-points rubric-box-regular">2 pt</div>
+            <div class="page-rubric-grid-desc rubric-box-regular">at least one path with an arc</div><div class="page-rubric-grid-box rubric-box-regular">Box 03-08-01</div>
+            <div class="page-rubric-grid-points rubric-box-regular">2 pt</div>
+            <div class="page-rubric-grid-desc rubric-box-regular">at least one polygon that is not a rectangle</div><div class="page-rubric-grid-box rubric-box-regular">Box 03-08-01</div>
+            <div class="page-rubric-grid-points rubric-box-regular">2 pt</div>
+            <div class="page-rubric-grid-desc rubric-box-regular">a hierarchy using grouping</div><div class="page-rubric-grid-box rubric-box-regular">Box 03-08-01</div>
+            <div class="page-rubric-grid-points rubric-box-regular">2 pt</div>
+            <div class="page-rubric-grid-desc rubric-box-regular">repeated instancing via use</div>
+    <div class="page-rubric-grid-header rubric-box-bonus">Advanced points (11):</div><div class="page-rubric-grid-box rubric-box-bonus">Box 03-06-01</div>
+            <div class="page-rubric-grid-points rubric-box-bonus">2 pt</div>
+            <div class="page-rubric-grid-desc rubric-box-bonus">multiple vehicles (must have spinning parts)</div><div class="page-rubric-grid-box rubric-box-bonus">Box 03-06-01</div>
+            <div class="page-rubric-grid-points rubric-box-bonus">2 pt</div>
+            <div class="page-rubric-grid-desc rubric-box-bonus">complex paths (at least one &#39;copter must be a circle)</div><div class="page-rubric-grid-box rubric-box-bonus">Box 03-06-01</div>
+            <div class="page-rubric-grid-points rubric-box-bonus">2 pt</div>
+            <div class="page-rubric-grid-desc rubric-box-bonus">cool looking vehicles</div><div class="page-rubric-grid-box rubric-box-bonus">Box 03-06-01</div>
+            <div class="page-rubric-grid-points rubric-box-bonus">2 pt</div>
+            <div class="page-rubric-grid-desc rubric-box-bonus">interaction (be sure to document)</div><div class="page-rubric-grid-box rubric-box-bonus">Box 03-06-01</div>
+            <div class="page-rubric-grid-points rubric-box-bonus">2 pt</div>
+            <div class="page-rubric-grid-desc rubric-box-bonus">quadcopters do something beyond move in a path</div><div class="page-rubric-grid-box rubric-box-bonus">Box 03-06-01</div>
+            <div class="page-rubric-grid-points rubric-box-bonus">1 pt</div>
+            <div class="page-rubric-grid-desc rubric-box-bonus">other articulated object</div></div>
+</details>
+</div>
+        
+        
+        
+        <h3 class="get__started">Get started on 
+            <a href="./docs/1/">Page &nbsp;1&nbsp; (Translate Transformations)</a>!</h3>
+        
+	</div>
+</main>
+
+                </div>
+                <div class="sidebar">
+<h2 class="Side_Title">Workbook 3: Transformations</h2>
+<p class="Side__Note">Pages:</p>
+<ul class="Side__List">
+    <li class="Side__Item Side__Selected">Index (CS559 Workbook 3: Transformations) </li>
+        <li class="Side__Item Side__Unselected"> <a href="./docs/1/">1: Translate Transformations </a></li>
+        <li class="Side__Item Side__Unselected"> <a href="./docs/2/">2: Scale Transformations </a></li>
+        <li class="Side__Item Side__Unselected"> <a href="./docs/3/">3: Composition </a></li>
+        <li class="Side__Item Side__Unselected"> <a href="./docs/4/">4: Rotation </a></li>
+        <li class="Side__Item Side__Unselected"> <a href="./docs/5/">5: Hierarchy </a></li>
+        <li class="Side__Item Side__Unselected"> <a href="./docs/6/">6: Quadcopter Exercise </a></li>
+        <li class="Side__Item Side__Unselected"> <a href="./docs/7/">7: SVG Tutorial and Transformations </a></li>
+        <li class="Side__Item Side__Unselected"> <a href="./docs/8/">8: SVG Exercise </a></li>
+        <li class="Side__Item Side__Unselected"> <a href="./docs/9/">9: Hand-in and Gallery </a></li>
+</ul>
+</div>
+</div>
+    </body>
+</html>

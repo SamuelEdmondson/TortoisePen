@@ -1,0 +1,25 @@
+Wisc ID:
+GitHub ID:
+
+[ ] correct WB3 Canvas Assignment submission on time [none]: 
+[ ] completed 03-workbook.txt in the for_student folder correctly [none]: 
+[ ] restore the triangle to original position when the “Jump Right” button is released [03-01-06]: 
+[ ] change the scales so the two pictures look the same [03-02-06]: 
+[ ] add appropriate transformations to make both images look the same [03-03-03]: 
+[ ] define the canvas coordinate systems as specified [03-03-05]: 
+[ ] quadcopter has a front and 4 arms [03-06-01]: 
+[ ] four attached propellers that spin [03-06-01]: 
+[ ] propellers spin at different rates [03-06-01]: 
+[ ] goes around a circle [03-06-01]: 
+[ ] faces points forward while going around circle [03-06-01]: 
+[ ] a picture using SVG [03-08-01]: 
+[ ] at least one path with an arc [03-08-01]: 
+[ ] at least one polygon that is not a rectangle [03-08-01]: 
+[ ] a hierarchy using grouping [03-08-01]: 
+[ ] repeated instancing via use [03-08-01]: 
+[ ] multiple vehicles (must have spinning parts) [03-06-01]: 
+[ ] complex paths (at least one 'copter must be a circle) [03-06-01]: 
+[ ] cool looking vehicles [03-06-01]: 
+[ ] interaction (be sure to document) [03-06-01]: 
+[ ] quadcopters do something beyond move in a path [03-06-01]: 
+[ ] other articulated object [03-06-01]: 
