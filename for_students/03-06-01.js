@@ -6,117 +6,261 @@ export {};
 const canvas = /** @type {HTMLCanvasElement} */ (document.getElementById("canvas1"));
 const ctx = canvas.getContext("2d");
 
+const waypoints = [];
+const tortoises = [];
+
+function floatEquals(a, b, epsilon = 0.01) {
+    return Math.abs(a - b) < epsilon;
+}
+
+
+class Waypoint {
+    constructor(posx, posy) {
+        this.posx = posx;
+        this.posy = posy; 
+    }
+}
+canvas.onclick = function(event) {
+    const x = event.clientX;
+    const y = event.clientY;
+    // unfortunately, X,Y is relative to the overall window -
+    // we need the X,Y inside the canvas!
+    // we know that event.target is a HTMLCanvasElement, so tell typescript
+    let box = /** @type {HTMLCanvasElement} */(event.target).getBoundingClientRect();
+    const mx = x-box.left;
+    const my = y-box.top;
+
+    waypoints.push(new Waypoint(mx, my));
+};
+
 // Resize the canvas
 canvas.width = 800;
 canvas.height = 600;
 
-// Quad properties
-const quad = {
-    x: canvas.width / 2,
-    y: canvas.height / 2,
-    radius: 20, // Body radius
-    armLength: 40, // Length of arms
-    rotorRadius: 10, // Rotor radius
-    angle: 0, // Angle of rotation for circular motion
-    speed: 0.01, // Speed of circular motion
-    rotorSpeeds: [0.2, 0.15, 0.1, 0.25], // Different speeds for rotors
-    rotorAngles: [0, 0, 0, 0], // Initial angles for rotors
-};
+class Tortoise {
+    constructor(posx, posy) {
+        this.posx = posx;
+        this.posy = posy;
+        this.vx = 0;
+        this.vy = 0;
+        this.current_target = null;
+        this.angle = 0;
+        this.speed = 5000*4;
+        this.components = [];
+        this.shell = new Shell(30, "darkgreen");
+        this.head = new Head(10, "green");
+        this.frontRightPaw = new Paw(16, "green");
+        this.tail = new Tail(3, "green");
 
-// Draw the quadcopter
-function drawQuadcopter(x, y, angle, rotorAngles) {
-    // Save the canvas state
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(angle); // Rotate the quadcopter to face the direction of travel
-
-    // Draw the body
-    ctx.beginPath();
-    ctx.arc(0, 0, quad.radius, 0, Math.PI * 2);
-    ctx.fillStyle = "black";
-    ctx.fill();
-
-    // Draw the front indicator
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(quad.radius + 10, 0); // Front-facing line
-    ctx.strokeStyle = "red";
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    // Rotor positions relative to the body
-    const rotors = [
-        { x: -quad.armLength, y: -quad.armLength }, // Top-left
-        { x: quad.armLength, y: -quad.armLength }, // Top-right
-        { x: -quad.armLength, y: quad.armLength }, // Bottom-left
-        { x: quad.armLength, y: quad.armLength }, // Bottom-right
-    ];
-
-    // Draw the arms
-    for (const rotor of rotors) {
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.lineTo(rotor.x, rotor.y);
-        ctx.strokeStyle = "gray";
-        ctx.lineWidth = 3;
-        ctx.stroke();
+        this.movement_states = ["idle", "moving_toward"];
+        this.current_state = "idle";
     }
 
-    // Draw the rotors
-    for (let i = 0; i < rotors.length; i++) {
-        const { x, y } = rotors[i];
-
-        // Rotor hub
-        ctx.beginPath();
-        ctx.arc(x, y, quad.rotorRadius, 0, Math.PI * 2);
-        ctx.fillStyle = "darkgray";
-        ctx.fill();
-
-        // Spinning blades
+    draw() {
         ctx.save();
-        ctx.translate(x, y);
-        ctx.rotate(rotorAngles[i]);
-        ctx.beginPath();
-        ctx.moveTo(-quad.rotorRadius, 0);
-        ctx.lineTo(quad.rotorRadius, 0);
-        ctx.moveTo(0, -quad.rotorRadius);
-        ctx.lineTo(0, quad.rotorRadius);
-        ctx.strokeStyle = "black";
-        ctx.lineWidth = 1;
-        ctx.stroke();
+        ctx.translate(this.posx, this.posy);
+        ctx?.rotate(this.angle)
+        ctx?.scale(2, 2);
+
+            ctx?.save();
+            ctx?.translate(0, -35); // Head location
+            this.head.draw();
+            ctx?.restore();
+
+            ctx?.save();
+            ctx?.translate(10, -10);
+            this.frontRightPaw.draw();
+            ctx?.scale(-1, 1);
+            ctx?.translate(20, 0);
+            this.frontRightPaw.draw();
+            ctx?.restore();
+
+            ctx?.save();
+            ctx?.translate(10, 20);
+            this.frontRightPaw.draw();
+            ctx?.scale(-1, 1);
+            ctx?.translate(20, 0);
+            this.frontRightPaw.draw();
+            ctx?.restore();
+
+            ctx?.save();
+            ctx?.translate(0, -5);
+            this.tail.draw();
+            ctx?.restore();
+
+            ctx?.save();
+            ctx?.translate(0, 0);
+            this.shell.draw(); // Save shell for last since we want everything under it
+            ctx?.restore();
+
         ctx.restore();
     }
 
-    // Restore the canvas state
-    ctx.restore();
+    update(deltaTime) {
+        this.posx += this.vx * deltaTime;
+        this.posy += this.vy * deltaTime;
+        
+        console.log(this.posx);
+        if (waypoints.length != 0) {
+            this.current_state = "moving_toward";
+
+            this.current_target = waypoints[0];
+
+            const aiming_direction = {
+                x: this.current_target.posx - this.posx,
+                y: this.current_target.posy - this.posy
+            }
+
+            this.angle = Math.atan2(aiming_direction.y, aiming_direction.x) + Math.PI/2;
+
+            this.vx = this.speed * (aiming_direction.x / (aiming_direction.x**2 + aiming_direction.y**2));
+            this.vy = this.speed * (aiming_direction.y / (aiming_direction.x**2 + aiming_direction.y**2));
+
+        }
+        else {
+            this.current_state = "idle";
+            this.vx = 0;
+            this.vy = 0;
+        }
+
+        if (this.current_state == "moving_toward") {
+            if (floatEquals(this.posx, this.current_target.posx, 100) && floatEquals(this.posy, this.current_target.posy, 100)) {
+                waypoints.shift();
+                this.current_state = "idle";
+            }
+        }
+
+        this.frontRightPaw.update(deltaTime);
+        this.shell.update(deltaTime);
+        this.tail.update(deltaTime);
+    }
 }
 
+class Shell {
+    constructor(size, color) {
+        this.size = size;
+        this.color = color;
+        this.posx = 0;
+        this.posy = 0;
+        this.sinWave = 0;
+    }
+
+    draw() {
+        ctx.save();
+        ctx.strokeStyle = "black"; // Black outline
+        ctx.fillStyle = this.color;
+        
+        ctx.beginPath();
+        ctx.arc(this.posx, this.posy, this.size, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx?.fill();
+        ctx.restore();
+    }
+
+    update(deltaTime) {
+        this.sinWave += deltaTime * 9;
+
+        this.posx = .5 * Math.sin(this.sinWave);
+        this.posy = .3 * Math.sin(this.sinWave);
+    }
+}
+
+class Head {
+    constructor(size, color) {
+        this.size = size;
+        this.color = color;
+    }
+
+    draw() {
+        ctx?.save();
+        ctx.strokeStyle = "black";
+        ctx.fillStyle = this.color;
+
+        ctx?.beginPath();
+        ctx?.arc(0, 0, this.size, 0, Math.PI * 2);
+        ctx?.stroke();
+        ctx?.fill();
+        ctx?.restore();
+    }
+}
+
+class Paw {
+    constructor(size, color) {
+        this.size = size;
+        this.color = color;
+        this.rotation = 0;
+        this.sineWave = 0;
+    }
+
+    draw() {
+        ctx?.save();
+        ctx.strokeStyle = "black";
+        ctx.fillStyle = this.color;
+
+        ctx?.rotate(this.rotation);
+        ctx?.fillRect(0, 0 - this.size, this.size * 2, this.size);
+
+        ctx?.restore();
+    }
+
+    update(deltaTime) {
+        this.sineWave += deltaTime * 5;
+        this.rotation = ((Math.PI / 8) * Math.sin(this.sineWave)) + (Math.PI / 12);
+    }
+}
+
+class Tail {
+    constructor(size, color) {
+        this.size = size;
+        this.color = color;
+        this.rotation = 0;
+        this.sineWave = Math.random();
+    }
+
+    draw() {
+        ctx?.save();
+        ctx?.rotate(this.rotation);
+        ctx.beginPath();
+        ctx.moveTo(25, 0);
+        ctx.lineTo(0, 50);
+        ctx.lineTo(-25, 0);
+        ctx.closePath();
+
+        ctx.fillStyle = this.color; // Set fill color
+        ctx.fill(); // Fill the triangle
+
+        ctx.strokeStyle = "black"; // Set border color
+        ctx.stroke(); // Outline the triangle
+        ctx?.restore();
+    }
+
+    update(deltaTime) {
+        this.sineWave += deltaTime * 4;
+        this.rotation = .1 * Math.sin(this.sineWave)
+    }
+}
+
+
+tortoises.push(new Tortoise(100, 100));
+
+var lastTime = 0;
 // Animation loop
 /**
  * @param {DOMHighResTimeStamp} timestamp
  */
 function loop(timestamp) {
-    // Clear the canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    ctx.fillStyle = "lightblue";
+    ctx?.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Update quadcopter position for circular motion
-    quad.x = canvas.width / 2 + Math.cos(quad.angle) * 150; // 150 is the circle radius
-    quad.y = canvas.height / 2 + Math.sin(quad.angle) * 150;
-
-    // Update rotation angle so the quadcopter faces the direction of travel
-    const travelAngle = quad.angle + Math.PI / 2;
-
-    // Update rotor angles
-    for (let i = 0; i < quad.rotorAngles.length; i++) {
-        quad.rotorAngles[i] += quad.rotorSpeeds[i];
-    }
-
-    // Increment the quadcopter's circular motion angle
-    quad.angle += quad.speed;
-
-    // Draw the quadcopter
-    drawQuadcopter(quad.x, quad.y, travelAngle, quad.rotorAngles);
-
+    let deltaTime = (timestamp - lastTime) / 1000; // Convert to seconds
+    lastTime = timestamp;
+    // Clear the canvas
+    tortoises.forEach(tortoise => {
+        tortoise.draw();
+        tortoise.update(deltaTime);
+    });
     // Request the next frame
     window.requestAnimationFrame(loop);
 }
