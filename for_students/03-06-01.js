@@ -163,13 +163,35 @@ class Shell {
 
     draw() {
         ctx.save();
-        ctx.strokeStyle = "black"; // Black outline
+        ctx.strokeStyle = "black"; // Outline color
         ctx.fillStyle = this.color;
         
+        // Draw the outer circle of the shell
         ctx.beginPath();
         ctx.arc(this.posx, this.posy, this.size, 0, Math.PI * 2);
+        ctx.fill();
         ctx.stroke();
-        ctx?.fill();
+        
+        // Draw an inner ring to add detail
+        ctx.beginPath();
+        ctx.arc(this.posx, this.posy, this.size * 0.6, 0, Math.PI * 2);
+        ctx.stroke();
+        
+        // Draw radial segments to simulate shell scutes
+        let segments = 8;
+        for (let i = 0; i < segments; i++) {
+            let angle = (i / segments) * 2 * Math.PI;
+            let innerRadius = this.size * 0.6;
+            let outerRadius = this.size * 0.95;
+            let x1 = this.posx + innerRadius * Math.cos(angle);
+            let y1 = this.posy + innerRadius * Math.sin(angle);
+            let x2 = this.posx + outerRadius * Math.cos(angle);
+            let y2 = this.posy + outerRadius * Math.sin(angle);
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+        }
         ctx.restore();
     }
 
@@ -216,7 +238,7 @@ class Paw {
         ctx.fillStyle = this.color;
 
         ctx?.rotate(this.rotation);
-        ctx?.fillRect(0, 0 - this.size, this.size * 2, this.size);
+        ctx?.fillRect(0, 0 - this.size, this.size * 1.6, this.size);
 
         ctx?.restore();
     }
@@ -286,10 +308,18 @@ function loop(timestamp) {
     let deltaTime = (timestamp - lastTime) / 1000; // Convert to seconds
     lastTime = timestamp;
     // Clear the canvas
+
+    waypoints.forEach(waypoint => {
+        ctx.fillStyle = "red";
+        ctx.fillRect(waypoint.posx, waypoint.posy, 30, 30);
+    })
+    
     tortoises.forEach(tortoise => {
         tortoise.draw();
         tortoise.update(deltaTime);
     });
+
+    
     // Request the next frame
     window.requestAnimationFrame(loop);
 }
