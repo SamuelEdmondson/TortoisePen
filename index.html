@@ -38,9 +38,6 @@
             <em>Sets of graphical objects that come and go</em> The food pellets come and go depending on whether or not they have been eaten yet!
         </li>
         <li>
-            <em>Sets of graphical objects that come and go</em> The food pellets come and go depending on whether or not they have been eaten yet!
-        </li>
-        <li>
             <em>Non-trivial 2D Canvas animation</em> The tortoise uses Math.sin() to move his arms and legs. These are offset so that all of his legs are not completely synced up and that each "corner" leg moves one at a time. When 
             a food pellet is placed, the unit vector pointing in that direction must be calculated and the tortoise is rotated accordingly. State machine logic is used for the tortoise's arm and shell movement so when he is idle he stops moving.
         </li>
@@ -52,6 +49,11 @@
         <li>
             <em>Use of basic transformations</em> Scale, rotate, and translate are all used for the components that make up the tortoise. For example, a scale of (-1, 0) is used to flip each of his opposite legs to the mirrored axis in order to reuse that component (notice, he only has "two" legs 
             in his class description, despite the fact he has 4!). The entire tortoise is scaled up since I felt the original design size was too small (very handy!). Rotate as you would guess is used to rotate his arms and the entire coordinate system of the tortoise, and translate is used to move both the entire tortoise as well as the subtle shell wobble as he moves.
+        </li>
+
+        <li>
+            <em>An SVG that uses instancing</em> The SVG image of the turtle in the water uses quadratic beziers for the shell and head. It uses an arc for the tail. Then these parts are instanced, and rotated and transformed. For example,
+            I rotate the tail to be pointing up in the water.
         </li>
     </ol>
 
@@ -114,9 +116,9 @@
 <h2 class="Side_Title">Workbook 3: Transformations</h2>
 <p class="Side__Note">Pages:</p>
 <ul class="Side__List">
-    <li class="Side__Item Side__Selected">Index (CS559 Workbook 3: Transformations) </li>
-        <li class="Side__Item Side__Unselected"> <a href="./docs/6/">1: Tortoise Feeding Frenzy! </a></li>
-        <li class="Side__Item Side__Unselected"> <a href="./docs/8/">8: SVG Exercise </a></li>
+    <li class="Side__Item Side__Selected">Index</li>
+        <li class="Side__Item Side__Unselected"> <a href="./docs/6/">Tortoise Feeding Frenzy! </a></li>
+        <li class="Side__Item Side__Unselected"> <a href="./docs/8/">SVG </a></li>
 </ul>
 </div>
 </div>
